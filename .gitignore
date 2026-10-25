@@ -1,0 +1,33 @@
+
+# Python cache and notebook backups
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Model outputs and checkpoints
+outputs/
+checkpoints/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+# Dataset files
+data/
+
+# Training logs and experiment tracking
+logs/
+swanlog/
+*.log
+
+# Temporary backups
+backup_before_json_format_*/
+
+# Monitoring screenshots: keep these in Git
+!monitoring/
+!monitoring/README.md
+!monitoring/screenshots/
+!monitoring/screenshots/**
+!monitoring/notes/
+!monitoring/notes/**
