@@ -45,6 +45,7 @@ class CustomTrainer:
         early_stopping_patience,
         swanlab_run,
         lr_scheduler_type,
+        memory_monitor=None,
     ):
         if not torch.cuda.is_available():
             raise RuntimeError("没有检测到 CUDA GPU。")
@@ -98,6 +99,7 @@ class CustomTrainer:
         self.early_stopping_patience = early_stopping_patience
         self.swanlab_run = swanlab_run
         self.lr_scheduler_type = lr_scheduler_type
+        self.memory_monitor = memory_monitor
 
         self.use_bf16 = (
             bf16 and torch.cuda.is_bf16_supported()
@@ -187,7 +189,17 @@ class CustomTrainer:
                 resume_from_checkpoint
             )
 
+        if self.memory_monitor is not None:
+            self.memory_monitor.start()
+
         for epoch in range(start_epoch, self.epochs):
+            if self.memory_monitor is not None:
+                self.memory_monitor.mark(
+                    "train",
+                    epoch=epoch + 1,
+                    global_step=self.global_step,
+                )
+
             self.model.train()
             self.optimizer.zero_grad(set_to_none=True)
 
@@ -271,6 +283,13 @@ class CustomTrainer:
                 f"| train_loss={train_loss:.6f} "
                 f"| lr={learning_rate:.8g}"
             )
+
+            if self.memory_monitor is not None:
+                self.memory_monitor.mark(
+                    "evaluation",
+                    epoch=epoch + 1,
+                    global_step=self.global_step,
+                )
 
             eval_metrics = self.evaluate()
 

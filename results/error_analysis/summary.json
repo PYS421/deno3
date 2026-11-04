@@ -1,0 +1,13 @@
+{
+  "validation_samples": 2500,
+  "TP": 2261,
+  "FP": 462,
+  "FN": 639,
+  "parse_errors": 18,
+  "samples_with_errors": 496,
+  "Precision": 0.8303341902313625,
+  "Recall": 0.7796551724137931,
+  "F1": 0.8041970478392317,
+  "adapter_path": "outputs/qwen2.5-7b-lora-round2/best",
+  "matching_rule": "exact match on (entity name, entity type)"
+}

@@ -31,3 +31,21 @@ backup_before_json_format_*/
 !monitoring/screenshots/**
 !monitoring/notes/
 !monitoring/notes/**
+
+# Dataset preprocessing cache
+data/**/.cache/
+
+# Memory monitoring raw logs and temporary tests
+monitoring/memory/**/*.csv
+monitoring/memory_test/
+
+# Experiment prediction and error sample files
+results/**/*_predictions.jsonl
+results/**/fn_errors.jsonl
+results/**/fp_errors.jsonl
+results/**/sample_errors.jsonl
+results/**/parse_recheck.jsonl
+
+# Notebook checkpoints and temporary backups
+.ipynb_checkpoints/
+*.bak

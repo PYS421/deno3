@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import sys
 import random
@@ -39,6 +40,7 @@ from src.model import load_tokenizer, build_model
 from src.dataset import Mydataset
 from src.collator import Mycollator
 from src.trainer import CustomTrainer
+from src.memory_monitor import MemoryMonitor
 
 
 def load_eval_samples(file_path):
@@ -142,6 +144,7 @@ def main():
         )
 
     swanlab_run = None
+    memory_monitor = None
 
     try:
         print("\n[1/6] 加载 Tokenizer")
@@ -250,6 +253,25 @@ def main():
 
         print("\n[6/6] 初始化自定义 Trainer")
 
+        # 每次实验使用独立目录，避免覆盖历史监控数据
+        run_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+        safe_method_name = str(method_name).replace("/", "_")
+        memory_output_dir = (
+            PROJECT_ROOT
+            / "monitoring"
+            / "memory"
+            / f"{safe_method_name}_{run_timestamp}"
+        )
+
+        memory_monitor = MemoryMonitor(
+            output_dir=memory_output_dir,
+            interval=1.0,
+            device=0,
+            swanlab_run=swanlab_run,
+        )
+
+        print(f"显存监控目录：{memory_output_dir}")
+
         trainer = CustomTrainer(
             model=model,
             tokenizer=tokenizer,
@@ -274,6 +296,7 @@ def main():
             early_stopping_patience=int(CONFIG["early_stopping_patience"]),
             swanlab_run=swanlab_run,
             lr_scheduler_type=CONFIG["lr_scheduler_type"],
+            memory_monitor=memory_monitor,
         )
 
         print("\n" + "=" * 60)
@@ -317,6 +340,12 @@ def main():
         )
 
     finally:
+        if memory_monitor is not None:
+            try:
+                memory_monitor.stop()
+            except Exception as exc:
+                print(f"显存监控停止失败：{exc}")
+
         if swanlab_run is not None:
             try:
                 swanlab.finish()

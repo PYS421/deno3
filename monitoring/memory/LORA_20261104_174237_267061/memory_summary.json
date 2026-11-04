@@ -1,0 +1,33 @@
+{
+  "duration_seconds": 7177.56,
+  "duration_minutes": 119.63,
+  "device": 0,
+  "gpu_name": "NVIDIA GeForce RTX 5090",
+  "sampling_interval_seconds": 1.0,
+  "overall_peak": {
+    "torch_peak_allocated_gb": 19.316,
+    "torch_peak_reserved_gb": 25.5742,
+    "gpu_peak_used_gb": 26.1709
+  },
+  "stage_statistics": {
+    "initialization": {
+      "samples": 2,
+      "torch_peak_allocated_gb": 14.3379,
+      "torch_peak_reserved_gb": 14.3633,
+      "gpu_peak_used_gb": 14.9385
+    },
+    "train": {
+      "samples": 2332,
+      "torch_peak_allocated_gb": 19.316,
+      "torch_peak_reserved_gb": 25.5742,
+      "gpu_peak_used_gb": 26.1709
+    },
+    "evaluation": {
+      "samples": 4214,
+      "torch_peak_allocated_gb": 15.0484,
+      "torch_peak_reserved_gb": 25.5742,
+      "gpu_peak_used_gb": 26.1709
+    }
+  },
+  "csv_file": "/root/autodl-tmp/demo3_qwen_ner/monitoring/memory/LORA_20261104_174237_267061/memory_log.csv"
+}
